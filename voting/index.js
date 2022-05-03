@@ -20,15 +20,7 @@ var cors = require('cors')
 app.use("/", express.static("ui"));
 app.use(cors())
 
-var username;
-var password;
 
-var votes = {
-	can1 : 0,
-	can2 : 0,
-	can3 : 0,
-	can4 : 0
-}
 
 app.post('/login', function(req, res) {
     
@@ -38,7 +30,7 @@ app.post('/login', function(req, res) {
     var hashedPassword = passwordHash.generate(password);
     console.log(hashedPassword);
     
-    if (username == "admin" && password == "password") {
+    if (username == "voter" && password == "password") {
 
     	res.status(200).send({ message: hashedPassword});
 
@@ -46,13 +38,7 @@ app.post('/login', function(req, res) {
     	res.status(500).send({ message: 'error' });
     }
 });
-var data = JSON.stringify(votes);
-fs.writeFile('data.json', data, (err) => {
-	if (err) {
-		throw err;
-	}
-	console.log("JSON data is saved.");
-});
+
 app.post('/auth', function(req, res) {
 	var cookie_pass = req.cookies['auth'];
 	if (passwordHash.verify('password', cookie_pass)) {
@@ -63,33 +49,7 @@ app.post('/auth', function(req, res) {
 });
 
 
-app.post('/vote', function(req, res) {
-	const candidate = req.body.candidate;
-	console.log(req.body)
-	fs.readFile('data.json', 'utf-8', (err, data) => {
-		if (err) {
-			throw err;
-		}
-	
-		// parse JSON object
-		const user = JSON.parse(data.toString());
-	
-		// print JSON object
-		console.log(user);
-	});
-	votes[candidate]+=1;
-	fs.writeFile('data.json', data, (err) => {
-		if (err) {
-			throw err;
-		}
-		console.log("JSON data is saved.");
-	});
-	res.status(200).send({ message:"Vote Successfull"});
-});
-app.get('/getVotes',function(req,res){
-	res.status(200).json(votes);
-	console.log(votes);
-});
+
 
 app.get('/',function(req,res){
 	var cookie_pass = req.cookies['auth'];
@@ -148,7 +108,8 @@ app.get('/info', function(req, res){
 
 
 
-var port = 8080;
-app.listen(8080, function () {
+
+var port = 8003;
+app.listen(port, function () {
   console.log(`app listening on port ${port}!`);
 });

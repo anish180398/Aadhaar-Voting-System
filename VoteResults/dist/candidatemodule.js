@@ -1,10 +1,15 @@
-const productsdb = (dbname, table) => {
+const candidateDB = (dbname, table) => {
     const db = new Dexie(dbname);
     db.version(1).stores(table);
     db.open();
   
     return db;
-   
+    /**
+         * const db = new Dexie('myDb');
+            db.version(1).stores({
+            friends: `name, age`
+        });
+         */
   };
   
   const bulkcreate = (dbtable, data) => {
@@ -62,14 +67,14 @@ const productsdb = (dbname, table) => {
     obj = {
       id: sortobj.id,
       name: sortobj.name,
-      quantity: sortobj.quantity,
-      price: sortobj.price
+      partyname: sortobj.partyname,
+      logo: sortobj.logo
     };
     return obj;
   }
   
   
-  export default productsdb;
+  export default candidateDB;
   export {
     bulkcreate,
     createEle,

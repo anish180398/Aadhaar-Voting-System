@@ -1,10 +1,15 @@
-const productsdb = (dbname, table) => {
+const votersDB = (dbname, table) => {
   const db = new Dexie(dbname);
   db.version(1).stores(table);
   db.open();
 
   return db;
- 
+  /**
+       * const db = new Dexie('myDb');
+          db.version(1).stores({
+          friends: `name, age`
+      });
+       */
 };
 
 const bulkcreate = (dbtable, data) => {
@@ -37,10 +42,7 @@ const empty = object => {
   }
   return flag;
 };
-function createELEM(datav){
-  console.log("Cee");
-  console.log(datav);
-}
+
 // getData from the database
 const getData = (dbname, fn) => {
   let index = 0;
@@ -59,43 +61,23 @@ const getData = (dbname, fn) => {
     }
   });
 };
-const getDatav = (dbname, fn,dv) => {
-  let index = 0;
-  let obj = {};
-  dbname.count(count => {
-    // count rows in the table using count method
-    if (count) {
-      dbname.each(table => {
-        // table => return the table object data
-        // to arrange order we are going to create for in loop
-        obj = SortObj(table);
-        fn(obj, index++); // call function with data argument
-        
-      });
-    } else {
-      fn(0);
-    }
-  });
-  createELEM(dv);
-};
 
 const SortObj = (sortobj) => {
   let obj = {};
   obj = {
     id: sortobj.id,
     name: sortobj.name,
-    quantity: sortobj.quantity,
-    price: sortobj.price
+    adhaarnumber: sortobj.adhaarnumber,
+    phonenumber: sortobj.phonenumber
   };
   return obj;
 }
 
 
-export default productsdb;
+export default votersDB;
 export {
   bulkcreate,
   createEle,
-  getDatav,
   getData,
   SortObj
 };
